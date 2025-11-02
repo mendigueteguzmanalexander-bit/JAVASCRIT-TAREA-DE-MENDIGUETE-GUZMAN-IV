@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>ASCII / Latin-1 0–255-MENDIGUETE GUZMAN IV CICLO</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, Arial; padding: 18px; background:#f7f7fb; color:#111 }
+    table { border-collapse: collapse; width:100%; max-width:900px; background:white; box-shadow:0 2px 6px rgba(0,0,0,.08) }
+    th, td { padding: 6px 8px; border:1px solid #eee; text-align:left; font-size:13px }
+    th { background:#fafafa; font-weight:600 }
+    .char { font-family: "Segoe UI Symbol", "Noto Sans", monospace; font-size:16px; }
+    .control { color:#888; font-style:italic }
+    caption { text-align:left; padding:10px 0; font-weight:600 }
+  </style>
+</head>
+<body>
+
+  <h2>Mapa de códigos 0 → 255</h2>
+  <p>Decimal — Hex — Carácter (no imprimibles marcados)</p>
+
+  <table id="asciiTable">
+    <caption>ASCII / Latin-1 (0–255)</caption>
+    <thead><tr><th>Decimal</th><th>Hex</th><th>Carácter</th><th>Nombre (si aplica)</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Nombres comunes para códigos de control (0-31 y 127)
+    const controlNames = {
+      0: "NUL", 1:"SOH", 2:"STX", 3:"ETX", 4:"EOT", 5:"ENQ", 6:"ACK", 7:"BEL",
+      8:"BS", 9:"TAB", 10:"LF", 11:"VT", 12:"FF", 13:"CR", 14:"SO", 15:"SI",
+      16:"DLE",17:"DC1",18:"DC2",19:"DC3",20:"DC4",21:"NAK",22:"SYN",23:"ETB",
+      24:"CAN",25:"EM",26:"SUB",27:"ESC",28:"FS",29:"GS",30:"RS",31:"US",
+      127:"DEL"
+    };
+
+    const tbody = document.querySelector("#asciiTable tbody");
+
+    for (let i = 0; i <= 255; i++) {
+      const tr = document.createElement("tr");
+      const hex = "0x" + i.toString(16).toUpperCase().padStart(2, "0");
+      const decCell = `<td>${i}</td>`;
+      const hexCell = `<td>${hex}</td>`;
+
+      let charText = "";
+      let nameText = "";
+
+      // Mostrar nombre para control chars
+      if (controlNames[i] !== undefined) {
+        charText = `<span class="control">(no imprimible)</span>`;
+        nameText = controlNames[i];
+      } else if (i === 32) {
+        charText = `<span class="char">[space]</span>`;
+        nameText = "SPACE";
+      } else {
+        const ch = String.fromCharCode(i);
+        // Escapar caracteres HTML sensibles
+        const escaped = ch.replace(/&/g, "&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        charText = `<span class="char">${escaped}</span>`;
+      }
+
+      tr.innerHTML = decCell + hexCell + `<td>${charText}</td>` + `<td>${nameText}</td>`;
+      tbody.appendChild(tr);
+    }
+  </script>
+</body>
+</html>
